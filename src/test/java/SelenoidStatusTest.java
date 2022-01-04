@@ -7,6 +7,7 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.*;
 
 
 public class SelenoidStatusTest {
@@ -76,11 +77,14 @@ public class SelenoidStatusTest {
                         .extract().path("total"); //как получить часть ответа(инт)
 
         System.out.println(response);
-        assertEquals(20, response); // для крутых юзать либу https://assertj.github.io/doc/
+        //assertEquals(20, response); // для крутых юзать либу https://assertj.github.io/doc/
+        assertThat(response).isEqualTo(20);
+
     }
 
     //выводпим разные части response
     @Test
+    @DisplayName("примеры вывода ответов")
     void checkTotal20WithTalkAboutResponse() {
         Response response =
                 get("https://selenoid.autotests.cloud/status")
@@ -92,5 +96,31 @@ public class SelenoidStatusTest {
         System.out.println(response.asString()); //full
         System.out.println(response.path("total").toString()); //20
         System.out.println(response.path("browsers.chrome").toString()); // {90.0={}, 91.0={}}
+    }
+
+    @Test
+    @DisplayName("проверяем wd/hub/status статус без авторизации")
+    void checkWdHubStatus401() {
+        get("https://selenoid.autotests.cloud/wd/hub/status")
+                .then()
+                .statusCode(401);
+    }
+
+    @Test
+    @DisplayName("проверяем wd/hub/status статус с авторизацией через строку (плохая)")
+    void checkWdHubStatus200() {
+        get("https://user1:1234@selenoid.autotests.cloud/wd/hub/status")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("проверяем wd/hub/status статус с авторизацией через бейсик логин")
+    void checkWdHubStatus200WithAuth() {
+        given()
+                .auth().basic("user1", "1234")
+                .get("https://selenoid.autotests.cloud/wd/hub/status")
+                .then()
+                .statusCode(200);
     }
 }
