@@ -23,7 +23,11 @@ allure {
 
 dependencies {
     testImplementation(
+            "org.aspectj:aspectjweaver:1.9.6",
+            "com.codeborne:selenide:$selenideVersion",
+            "io.qameta.allure:allure-selenide:$allureVersion",
             'io.rest-assured:rest-assured:4.4.0',
+            "io.qameta.allure:allure-rest-assured:$allureVersion",
             "org.assertj:assertj-guava:3.4.0",
             "org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly(

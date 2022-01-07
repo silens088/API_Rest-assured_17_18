@@ -1,3 +1,5 @@
+package webshop.tests;
+
 import io.qameta.allure.Feature;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
