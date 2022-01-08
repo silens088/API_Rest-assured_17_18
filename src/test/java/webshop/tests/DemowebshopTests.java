@@ -31,6 +31,8 @@ public class DemowebshopTests {
         step("Add simpleComputer to Cart", () -> {
             Response response =
                     given()
+                            .log().uri() //компактный вариант
+                            .log().body()
                             .contentType("application/x-www-form-urlencoded; charset=UTF-8")
                             .body(bodyData)
                             .when()
